@@ -1,17 +1,22 @@
 #!/usr/bin/python
 import sys
-
+import time
 class LatticeNode:
-	
+	routes = None
 	nodeBelow = None
 	nodeRight = None
 	def calculateRoutes(self):
-		if(self.nodeBelow and self.nodeRight):
-			return self.nodeBelow.calculateRoutes() + self.nodeRight.calculateRoutes()
+		if(self.routes):
+			return self.routes
+		elif(self.nodeBelow and self.nodeRight):
+			self.routes = self.nodeBelow.calculateRoutes() + self.nodeRight.calculateRoutes()
+			return self.routes
 		elif(self.nodeBelow):
-			return self.nodeBelow.calculateRoutes()
+			self.routes = self.nodeBelow.calculateRoutes()
+			return self.routes
 		elif(self.nodeRight):
-			return self.nodeRight.calculateRoutes()
+			self.routes = self.nodeRight.calculateRoutes()
+			return self.routes
 		else:
 			return 1
 			
@@ -40,8 +45,11 @@ class Lattice:
 				
 	def calculateRoutes(self):
 		print("Calculating...")
-		return self.nodes[0][0].calculateRoutes()	
-		print("Finished Calculating")		
+		startTime = time.clock()
+		routeNum =self.nodes[0][0].calculateRoutes()	
+		print(time.clock()-startTime)
+		return routeNum
+				
 	
 if __name__ == "__main__":
 	x = int(sys.argv[1])+1
